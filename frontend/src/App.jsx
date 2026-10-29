@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState, useCallback } from 'react'
 import './App.css'
+import QueryLab from "./QueryLab";
 
 const ADMIN_PIN = '1234'
 const STATUSES = ['Pending', 'Preparing', 'Ready', 'Completed', 'Cancelled']
@@ -91,6 +92,7 @@ export default function App() {
             <button className={view === 'menu' ? 'on' : ''} onClick={() => setView('menu')}>Menu</button>
             <button className={view === 'orders' ? 'on' : ''} onClick={() => setView('orders')}>My orders</button>
             <button className={view === 'admin' ? 'on' : ''} onClick={() => setView('admin')}>Canteen admin</button>
+            <button className={view === 'querylab' ? 'on' : ''} onClick={() => setView('querylab')}>Query Lab</button>
           </nav>
           <div className="top-right">
             {customer && (
@@ -116,6 +118,7 @@ export default function App() {
         {view === 'admin' && (isAdmin
           ? <Admin foods={foods} setFoods={setFoods} orders={orders} setOrders={setOrders} notify={notify} />
           : <PinGate onOk={() => setIsAdmin(true)} notify={notify} />)}
+        {view === 'querylab' && <QueryLab />}
       </main>
 
       {view === 'menu' && cartCount > 0 && (
@@ -123,7 +126,7 @@ export default function App() {
           <span>{cartCount} item{cartCount > 1 ? 's' : ''}</span><span>View tray · {inr(cartTotal)}</span>
         </button>
       )}
-      {!customer && view !== 'admin' && <Register onDone={setCustomer} notify={notify} />}
+      {!customer && view !== 'admin' && view !== 'querylab' && <Register onDone={setCustomer} notify={notify} />}
       {toast && <div className={'toast' + (toast.err ? ' err' : '')} role="status">{toast.msg}</div>}
     </div>
   )
